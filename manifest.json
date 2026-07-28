@@ -1,0 +1,24 @@
+{
+  "name": "Linguify AI Assistant",
+  "short_name": "Linguify",
+  "description": "AI-powered linguistics assistant by Nikos Michailakis",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f2ec",
+  "theme_color": "#2c5f2e",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
