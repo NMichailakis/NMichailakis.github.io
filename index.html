@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Linguify · AI Linguistics Assistant</title>
+<link rel="manifest" href="/manifest.json"/>
+<meta name="theme-color" content="#12182a"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Linguify"/>
+<link rel="apple-touch-icon" href="/icon-192.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ink: #0e0d0c;
+    --paper: #f5f2ec;
+    --cream: #ede9e0;
+    --accent: #2c5f2e;
+    --accent2: #8b4513;
+    --muted: #7a7060;
+    --border: #d4cfc4;
+    --dark: #12182a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    background: rgba(245, 242, 236, 0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo img { height: 36px; }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--ink); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 4rem 6rem 6rem;
+    position: relative;
+  }
+
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 15%; bottom: 15%;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  .hero-name {
+    font-size: clamp(2.5rem, 4.5vw, 5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.4s;
+  }
+
+  .hero-name em { font-style: italic; color: var(--accent2); }
+
+  .hero-desc {
+    font-size: 1.2rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--muted);
+    max-width: 440px;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.6s;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.8s;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--dark);
+    color: var(--paper);
+    padding: 0.85rem 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover { background: var(--accent); transform: translateY(-2px); }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--border);
+    color: var(--ink);
+    padding: 0.85rem 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover { border-color: var(--ink); transform: translateY(-2px); }
+
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 6rem 6rem 4rem;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 1s;
+  }
+
+  .hero-quote {
+    font-size: 2rem;
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: 1rem;
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .hero-quote::before {
+    content: '"';
+    position: absolute;
+    left: 0; top: -0.3rem;
+    font-size: 4rem;
+    color: var(--accent);
+    line-height: 1;
+    font-style: normal;
+  }
+
+  .hero-quote-attr {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding-left: 2rem;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .stat-num { font-size: 2.5rem; font-weight: 300; color: var(--ink); display: block; }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; }
+
+  /* ABOUT */
+  .about {
+    background: var(--cream);
+    padding: 8rem 6rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 6rem;
+    align-items: start;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    position: sticky;
+    top: 100px;
+  }
+
+  .about-content h2 { font-size: 3rem; font-weight: 300; line-height: 1.2; margin-bottom: 2rem; }
+  .about-content h2 em { font-style: italic; color: var(--accent2); }
+  .about-content p { font-size: 1.2rem; line-height: 1.8; color: var(--muted); margin-bottom: 1.5rem; }
+  .about-content p strong { color: var(--ink); font-weight: 600; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2rem; }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  /* LINGUIFY */
+  .linguify { padding: 8rem 6rem; border-top: 1px solid var(--border); }
+
+  .linguify-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .linguify-header h2 { font-size: 3.5rem; font-weight: 300; letter-spacing: -0.02em; }
+  .linguify-header h2 em { font-style: italic; color: var(--accent); }
+
+  .linguify-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    margin-bottom: 4rem;
+  }
+
+  .linguify-card { background: var(--paper); padding: 2.5rem; transition: background 0.2s; }
+  .linguify-card:hover { background: var(--cream); }
+  .card-icon { font-size: 1.8rem; margin-bottom: 1.2rem; }
+  .card-title { font-size: 1.4rem; font-weight: 400; margin-bottom: 0.8rem; }
+  .card-desc { font-size: 1rem; line-height: 1.7; color: var(--muted); }
+
+  .linguify-demo {
+    background: var(--dark);
+    color: var(--paper);
+    padding: 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .demo-text h3 { font-size: 2rem; font-weight: 300; line-height: 1.3; margin-bottom: 1rem; }
+  .demo-text h3 em { font-style: italic; color: #a8d5a2; }
+  .demo-text p { font-size: 1.1rem; line-height: 1.7; color: rgba(245,242,236,0.6); margin-bottom: 2rem; }
+
+  .demo-chat { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 2rem; }
+  .chat-msg { margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.6; }
+  .chat-msg.user { text-align: right; color: rgba(245,242,236,0.5); }
+  .chat-msg.user span { background: rgba(255,255,255,0.08); padding: 0.5rem 1rem; display: inline-block; }
+  .chat-msg.bot span { background: rgba(168,213,162,0.15); color: #a8d5a2; padding: 0.5rem 1rem; display: inline-block; }
+
+  /* CONTACT */
+  .contact {
+    background: var(--cream);
+    padding: 8rem 6rem;
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .contact h2 { font-size: 3.5rem; font-weight: 300; line-height: 1.15; margin-bottom: 1.5rem; }
+  .contact h2 em { font-style: italic; color: var(--accent2); }
+  .contact p { font-size: 1.2rem; line-height: 1.7; color: var(--muted); margin-bottom: 2.5rem; }
+
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link {
+    display: flex; align-items: center; gap: 1rem;
+    text-decoration: none; color: var(--ink); font-size: 1.1rem;
+    padding: 1rem 1.2rem; border: 1px solid var(--border);
+    background: var(--paper); transition: all 0.2s;
+  }
+  .contact-link:hover { border-color: var(--ink); transform: translateX(4px); }
+  .contact-link-icon { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); min-width: 60px; }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 6rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 2rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 5rem 2rem 3rem; }
+    .hero-left::after { display: none; }
+    .hero-right { padding: 2rem; border-top: 1px solid var(--border); }
+    .about { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 2rem; }
+    .linguify { padding: 4rem 2rem; }
+    .linguify-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .linguify-grid { grid-template-columns: 1fr; }
+    .linguify-demo { grid-template-columns: 1fr; padding: 2rem; gap: 2rem; }
+    .contact { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 3rem; }
+    footer { padding: 2rem; flex-direction: column; gap: 1rem; text-align: center; }
+    .hero-stats { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="icon-192.png" alt="Linguify" style="height:36px; filter: invert(1);" onerror="this.style.display='none'"/>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#linguify">Linguify</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://github.com/NMichailakis" target="_blank">GitHub</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-tag">Computational Linguistics · AI Research</p>
+    <h1 class="hero-name">Nikos<br><em>Michailakis</em></h1>
+    <p class="hero-desc">Linguistics student at the National & Kapodistrian University of Athens, building AI systems that give language not just syntax — but soul.</p>
+    <div class="hero-cta">
+      <a href="https://www.chatbase.co/FcdPWVYfXQ59_XoadVj5d/help" target="_blank" class="btn-primary">Try Linguify AI →</a>
+      <a href="#about" class="btn-secondary">Learn More</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <blockquote class="hero-quote">We don't just give syntax to texts. We give them soul.</blockquote>
+    <p class="hero-quote-attr">— Linguify</p>
+    <div class="hero-stats">
+      <div><span class="stat-num">C2</span><span class="stat-label">English Level</span></div>
+      <div><span class="stat-num">2+</span><span class="stat-label">Years Teaching</span></div>
+      <div><span class="stat-num">1st</span><span class="stat-label">MUN Award</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="section-label">About Me</div>
+  <div class="about-content">
+    <h2>Where <em>language</em><br>meets intelligence</h2>
+    <p>I'm an undergraduate student of <strong>Greek Philology</strong> at the National & Kapodistrian University of Athens, specializing in <strong>Linguistics</strong>. My research focuses on Computational Linguistics — the field where human language and artificial intelligence converge.</p>
+    <p>I build AI systems that apply real linguistic theory to practical problems. My work bridges <strong>theoretical linguistics</strong> (syntax, semantics, morphology, pragmatics) with <strong>applied AI</strong>, creating tools that understand language the way humans do — with nuance, accuracy, and depth.</p>
+    <p>I hold a <strong>C2 Michigan Proficiency</strong> in English and a certified <strong>Python programming</strong> course from the University of Patras. I'm a former award-winning <strong>Model UN delegate</strong>, having won Best Expert twice.</p>
+    <div class="tags">
+      <span class="tag">Computational Linguistics</span>
+      <span class="tag">NLP</span>
+      <span class="tag">Prompt Engineering</span>
+      <span class="tag">Python</span>
+      <span class="tag">Ancient Greek</span>
+      <span class="tag">AI Research</span>
+      <span class="tag">Text Analysis</span>
+    </div>
+  </div>
+</section>
+
+<section class="linguify" id="linguify">
+  <div class="linguify-header">
+    <h2>The <em>Linguify</em><br>AI Assistant</h2>
+    <a href="https://github.com/NMichailakis/linguify_ai_assistant" target="_blank" class="btn-secondary">View on GitHub →</a>
+  </div>
+  <div class="linguify-grid">
+    <div class="linguify-card"><div class="card-icon">📜</div><h3 class="card-title">Ancient Greek Translation</h3><p class="card-desc">Precise translations from Ancient Greek with grammatical analysis and linguistic commentary.</p></div>
+    <div class="linguify-card"><div class="card-icon">✍️</div><h3 class="card-title">Text Improvement</h3><p class="card-desc">Elevates your text with clarity, style, and linguistic nuance — going beyond grammar correction.</p></div>
+    <div class="linguify-card"><div class="card-icon">🔬</div><h3 class="card-title">Grammatical Analysis</h3><p class="card-desc">In-depth morphological and syntactic analysis in both Ancient and Modern Greek.</p></div>
+  </div>
+  <div class="linguify-demo">
+    <div class="demo-text">
+      <h3>Try the assistant <em>live</em></h3>
+      <p>Ask it to translate Ancient Greek, analyse a sentence, or improve your academic writing.</p>
+      <a href="https://www.chatbase.co/FcdPWVYfXQ59_XoadVj5d/help" target="_blank" class="btn-primary">Open Linguify →</a>
+    </div>
+    <div class="demo-chat">
+      <div class="chat-msg user"><span>Κάνε χρονική αντικατάσταση το ρήμα "λύω" στον αόριστο.</span></div>
+      <div class="chat-msg bot"><span>Αόριστος α΄ του "λύω": ἔλυσα, ἔλυσας, ἔλυσε... Πρόκειται για θεματικό αόριστο με χαρακτηριστικό επίθημα -σα.</span></div>
+      <div class="chat-msg user"><span>Και στην υποτακτική;</span></div>
+      <div class="chat-msg bot"><span>Υποτακτική αορίστου: λύσω, λύσῃς, λύσῃ, λύσωμεν, λύσητε, λύσωσι...</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div>
+    <h2>Let's<br><em>connect</em></h2>
+    <p>Whether you're interested in linguistics, AI research, collaboration, or just want to discuss language — I'd love to hear from you.</p>
+    <a href="https://www.chatbase.co/FcdPWVYfXQ59_XoadVj5d/help" target="_blank" class="btn-primary">Try Linguify AI →</a>
+  </div>
+  <div class="contact-links">
+    <a href="mailto:nickmichailakis@hotmail.com" class="contact-link"><span class="contact-link-icon">Email</span>nickmichailakis@hotmail.com</a>
+    <a href="https://github.com/NMichailakis" target="_blank" class="contact-link"><span class="contact-link-icon">GitHub</span>github.com/NMichailakis</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Nikos Michailakis · Linguify</p>
+  <p>Built with purpose · Athens, Greece</p>
+</footer>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js');
+    });
+  }
+</script>
+</body>
+</html>
