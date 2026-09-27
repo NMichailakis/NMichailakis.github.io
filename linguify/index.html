@@ -2,76 +2,43 @@
 <html lang="el">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Linguify</title>
 <style>
-  :root {
-    --bg: #f4f8fa;
-    --surface: #ffffff;
-    --text: #182530;
-    --muted: #5c7080;
-    --accent: #2c5f8a;
-    --accent-soft: #dbe8f2;
-    --green: #2f8f5b;
-    --border: #dde6ec;
-    box-sizing: border-box;
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #101820;
-      --surface: #16212b;
-      --text: #e6eef3;
-      --muted: #93a8b8;
-      --accent: #7fb3dd;
-      --accent-soft: #1e3446;
-      --green: #6fcf9a;
-      --border: #223140;
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #101820;
-    --surface: #16212b;
-    --text: #e6eef3;
-    --muted: #93a8b8;
-    --accent: #7fb3dd;
-    --accent-soft: #1e3446;
-    --green: #6fcf9a;
-    --border: #223140;
-  }
-  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: "Georgia", "Iowan Old Style", serif;
-    line-height: 1.5;
-  }
-  header {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 4rem 1.5rem 2rem;
-    text-align: center;
-  }
-  .logo {
-    font-size: 2.4rem;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    margin: 0;
-    background: linear-gradient(90deg, var(--accent), var(--green));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  .tagline {
-    color: var(--muted);
-    font-size: 1.1rem;
-    margin-top: 0.6rem;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  }
-  main {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 1rem 1.5rem 4rem;
+  body { margin:0; background:#eef4f8; color:#182530; font-family:Georgia,serif; line-height:1.5; }
+  header { max-width:900px; margin:0 auto; padding:3rem 1.5rem 1.5rem; text-align:center; }
+  .logo { font-size:2.4rem; font-weight:bold; color:#2c5f8a; margin:0; }
+  .tagline { color:#5c7080; font-size:1.1rem; margin-top:0.5rem; font-family:Arial,sans-serif; }
+  main { max-width:960px; margin:0 auto; padding:1rem 1.5rem 3rem; display:flex; flex-wrap:wrap; gap:1.2rem; justify-content:center; }
+  .card { background:#ffffff; border:1px solid #dde6ec; border-top:4px solid #2f8f5b; border-radius:10px; padding:1.5rem; width:280px; font-family:Arial,sans-serif; }
+  .card h2 { font-family:Georgia,serif; font-size:1.2rem; margin:0 0 0.5rem; color:#182530; }
+  .card p { color:#5c7080; font-size:0.9rem; margin:0 0 1.2rem; }
+  .card a { display:inline-block; background:#dbe8f2; color:#2c5f8a; text-decoration:none; font-weight:bold; padding:0.6rem 1rem; border-radius:6px; font-size:0.9rem; }
+  footer { text-align:center; color:#5c7080; font-size:0.8rem; padding:2rem 1.5rem; font-family:Arial,sans-serif; }
+</style>
+</head>
+<body>
+  <header>
+    <p class="logo">Linguify</p>
+    <p class="tagline">Γλωσσολογική ακρίβεια, με τη δύναμη του AI</p>
+  </header>
+  <main>
+    <div class="card">
+      <h2>Επιμέλεια &amp; Μετάφραση</h2>
+      <p>Γλωσσική επιμέλεια, διόρθωση και μετάφραση ελληνικού κειμένου με τη βοήθεια AI.</p>
+      <a href="offer.html">Ζήτησε προσφορά</a>
+    </div>
+    <div class="card">
+      <h2>Μαθητές</h2>
+      <p>Υλικό Νέας Ελληνικής Γλώσσας (Α΄–Γ΄ Γυμνασίου), προσβάσιμο online.</p>
+      <a href="students.html">Είσοδος μαθητών</a>
+    </div>
+    <div class="card">
+      <h2>Linguify AI</h2>
+      <p>AI εργαλείο επιμέλειας και ελέγχου ελληνικού κειμένου, δοκιμασμένο εκτενώς.</p>
+      <a href="https://www.chatbase.co/FcdPWVYfXQ59_XoadVj5d/help" target="_blank" rel="noopener">Δοκίμασέ το τώρα</a>
+    </div>
+  </main>
+  <footer>Linguify — 2026</footer>
+</body>
+</html>
